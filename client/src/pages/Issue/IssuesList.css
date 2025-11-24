@@ -1,0 +1,137 @@
+/* Mobile First - Base Styles */
+.filters {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.filter-group label {
+  font-weight: 600;
+  color: #e0e0e0;
+  font-size: 13px;
+}
+
+.filter-group .input {
+  width: 100%;
+}
+
+.issues-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 15px;
+}
+
+.issue-card {
+  background: #3d4758;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #4a5568;
+  transition: all 0.3s;
+}
+
+.issue-card:hover {
+  border-color: #718096;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+.issue-header {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.issue-header h3 {
+  margin: 0;
+  flex: 1;
+  font-size: 16px;
+  color: #ffffff;
+}
+
+.issue-description {
+  color: #a0a0a0;
+  margin-bottom: 12px;
+  line-height: 1.6;
+  flex: 1;
+  font-size: 14px;
+}
+
+.issue-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 12px;
+  color: #a0a0a0;
+  margin-bottom: 12px;
+}
+
+.verification-badges {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+/* Tablet - 768px and up */
+@media (min-width: 768px) {
+  .filters {
+    flex-direction: row;
+    gap: 20px;
+  }
+
+  .filter-group {
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .filter-group label {
+    font-size: 14px;
+  }
+
+  .filter-group .input {
+    width: auto;
+    min-width: 150px;
+  }
+
+  .issues-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .issue-card {
+    padding: 20px;
+  }
+
+  .issue-header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: start;
+  }
+
+  .issue-header h3 {
+    font-size: 18px;
+  }
+
+  .issue-meta {
+    flex-direction: row;
+    gap: 15px;
+  }
+}
+
+/* Desktop - 1024px and up */
+@media (min-width: 1024px) {
+  .issues-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

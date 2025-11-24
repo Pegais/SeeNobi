@@ -1,0 +1,58 @@
+/* Mobile First - Base Styles */
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 200px);
+  padding: 20px;
+  background: #2d2d2d;
+}
+
+.auth-card {
+  background: #3d4758;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+  width: 100%;
+  max-width: 400px;
+  border: 1px solid #4a5568;
+}
+
+.auth-card h2 {
+  margin-bottom: 30px;
+  text-align: center;
+  color: #ffffff;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.btn-block {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.auth-link {
+  text-align: center;
+  margin-top: 20px;
+  color: #a0a0a0;
+}
+
+.auth-link a {
+  color: #7dd3fc;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.auth-link a:hover {
+  text-decoration: underline;
+  color: #a0d4f0;
+}
+
+/* Tablet - 768px and up */
+@media (min-width: 768px) {
+  .auth-card {
+    padding: 40px;
+  }
+}

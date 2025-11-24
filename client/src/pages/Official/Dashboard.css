@@ -1,0 +1,35 @@
+/* Mobile First - Base Styles */
+.official-info {
+  color: #a0a0a0;
+  margin-top: 5px;
+  font-size: 14px;
+}
+
+.section-header {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.section-header .input {
+  width: 100%;
+}
+
+.issue-actions {
+  margin-top: 15px;
+}
+
+/* Tablet - 768px and up */
+@media (min-width: 768px) {
+  .section-header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .section-header .input {
+    width: auto;
+    min-width: 200px;
+  }
+}

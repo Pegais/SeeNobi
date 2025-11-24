@@ -1,0 +1,13 @@
+/* Mobile First - Base Styles */
+.company-info {
+  color: #a0a0a0;
+  margin-top: 5px;
+  font-size: 14px;
+}
+
+/* Tablet - 768px and up */
+@media (min-width: 768px) {
+  .company-info {
+    font-size: 16px;
+  }
+}

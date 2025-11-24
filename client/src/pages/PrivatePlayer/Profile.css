@@ -1,0 +1,45 @@
+/* Mobile First - Base Styles */
+.company-type {
+  color: #a0a0a0;
+  font-size: 16px;
+  margin-top: 5px;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 15px;
+}
+
+.info-item label {
+  display: block;
+  font-weight: 600;
+  color: #a0a0a0;
+  margin-bottom: 5px;
+  font-size: 13px;
+}
+
+.info-item p {
+  color: #e0e0e0;
+  font-size: 14px;
+}
+
+/* Tablet - 768px and up */
+@media (min-width: 768px) {
+  .company-type {
+    font-size: 18px;
+  }
+
+  .info-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .info-item label {
+    font-size: 14px;
+  }
+
+  .info-item p {
+    font-size: 16px;
+  }
+}

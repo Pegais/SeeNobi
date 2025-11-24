@@ -1,0 +1,37 @@
+/* Mobile First - Base Styles */
+.rating-card {
+  background: #3d4758;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  max-width: 100%;
+  margin: 0 auto;
+  border: 1px solid #4a5568;
+}
+
+.rating-group {
+  margin-bottom: 20px;
+}
+
+.info-box {
+  background: #2d2d2d;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  border-left: 4px solid #718096;
+  border: 1px solid #4a5568;
+}
+
+.info-box p {
+  margin: 0;
+  color: #a0a0a0;
+  font-size: 13px;
+}
+
+/* Tablet - 768px and up */
+@media (min-width: 768px) {
+  .rating-card {
+    padding: 30px;
+    max-width: 600px;
+  }
+}
