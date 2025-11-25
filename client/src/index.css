@@ -1,3 +1,76 @@
+/* CSS Variables for Theme Support */
+:root {
+  /* Dark Theme (Default) */
+  --bg-primary: #2d2d2d;
+  --bg-secondary: #3d4758;
+  --bg-tertiary: #2d2d2d;
+  --bg-overlay: rgba(45, 45, 45, 0.85);
+  
+  --text-primary: #ffffff;
+  --text-secondary: #e8e8e8;
+  --text-tertiary: #a0a0a0;
+  --text-muted: #808080;
+  
+  --border-color: #4a5568;
+  --border-hover: #718096;
+  
+  --accent-color: #718096;
+  --link-color: #7dd3fc;
+  --link-hover: #a0d4f0;
+  
+  --card-bg: rgba(61, 71, 88, 0.95);
+  --card-border: #4a5568;
+  
+  --input-bg: #2d2d2d;
+  --input-border: #4a5568;
+  --input-focus-bg: #3d4758;
+  
+  --button-primary-bg: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
+  --button-primary-hover: linear-gradient(135deg, #5a6578 0%, #3d4758 100%);
+  --button-secondary-bg: #2d3748;
+  --button-secondary-hover: #3d4758;
+  
+  --shadow-sm: rgba(0,0,0,0.2);
+  --shadow-md: rgba(0,0,0,0.3);
+  --shadow-lg: rgba(0,0,0,0.5);
+}
+
+[data-theme="light"] {
+  /* Light Theme - Warm White */
+  --bg-primary: #fbfbfb;
+  --bg-secondary: #E1F0DA;
+  --bg-tertiary: #f0ede6;
+  --bg-overlay: rgba(250, 248, 245, 0.95);
+  
+  --text-primary:black;
+  --text-secondary: #3d3d3d;
+  --text-tertiary: #5a5a5a;
+  --text-muted: #808080;
+  
+  --border-color: #e0ddd6;
+  --border-hover: #d0cdc6;
+  
+  --accent-color: #8b7355;
+  --link-color: #6b8e9f;
+  --link-hover: #5a7a8a;
+  
+  --card-bg: rgba(255, 253, 250, 0.98);
+  --card-border: #e8e5de;
+  
+  --input-bg: #ffffff;
+  --input-border: #e0ddd6;
+  --input-focus-bg: #faf8f5;
+  
+  --button-primary-bg: linear-gradient(135deg, #8b7355 0%, #6b5a45 100%);
+  --button-primary-hover: linear-gradient(135deg, #9b8365 0%, #7b6a55 100%);
+  --button-secondary-bg: #e8e5de;
+  --button-secondary-hover: #d8d5ce;
+  
+  --shadow-sm: rgba(0,0,0,0.08);
+  --shadow-md: rgba(0,0,0,0.12);
+  --shadow-lg: rgba(0,0,0,0.2);
+}
+
 /* Mobile First - Base Styles */
 * {
   margin: 0;
@@ -11,10 +84,11 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #2d2d2d;
-  color: #e8e8e8;
+  background-color: var(--bg-primary);
+  color: var(--text-secondary);
   font-size: 14px;
   line-height: 1.5;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 code {
@@ -43,28 +117,28 @@ code {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
-  color: #ffffff;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.4);
-  border: 1px solid #4a5568;
+  background: var(--button-primary-bg);
+  color: var(--text-primary);
+  box-shadow: 0 2px 4px var(--shadow-sm);
+  border: 1px solid var(--border-color);
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.5);
-  background: linear-gradient(135deg, #5a6578 0%, #3d4758 100%);
+  box-shadow: 0 4px 8px var(--shadow-md);
+  background: var(--button-primary-hover);
 }
 
 .btn-secondary {
-  background: #2d3748;
-  color: #ffffff;
-  border: 1px solid #4a5568;
+  background: var(--button-secondary-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
 }
 
 .btn-secondary:hover {
-  background: #3d4758;
+  background: var(--button-secondary-hover);
   transform: translateY(-2px);
-  border-color: #5a6578;
+  border-color: var(--border-hover);
 }
 
 .btn-success {
@@ -93,37 +167,38 @@ code {
 }
 
 .card {
-  background: #3d4758;
+  background: var(--bg-secondary);
   border-radius: 12px;
   padding: 15px;
   margin-bottom: 15px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-  border: 1px solid #4a5568;
+  box-shadow: 0 2px 4px var(--shadow-sm);
+  border: 1px solid var(--border-color);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .input {
   width: 100%;
   padding: 10px;
-  border: 2px solid #4a5568;
+  border: 2px solid var(--input-border);
   border-radius: 8px;
   font-size: 14px;
   margin-bottom: 12px;
-  transition: border-color 0.3s;
-  background: #2d2d2d;
-  color: #e8e8e8;
+  transition: border-color 0.3s, background-color 0.3s;
+  background: var(--input-bg);
+  color: var(--text-secondary);
 }
 
 .input:focus {
   outline: none;
-  border-color: #718096;
-  background: #3d4758;
+  border-color: var(--border-hover);
+  background: var(--input-focus-bg);
 }
 
 .label {
   display: block;
   margin-bottom: 6px;
   font-weight: 600;
-  color: #e8e8e8;
+  color: var(--text-secondary);
   font-size: 13px;
 }
 
@@ -159,29 +234,53 @@ code {
   border: 1px solid #6b2a2a;
 }
 
-/* Global Link Styles - Dark Theme */
+[data-theme="light"] .badge-success {
+  background-color: #d4e6d4;
+  color: #2d5016;
+  border: 1px solid #a0d4a0;
+}
+
+[data-theme="light"] .badge-warning {
+  background-color: #fff4d4;
+  color: #8b7355;
+  border: 1px solid #ffd700;
+}
+
+[data-theme="light"] .badge-info {
+  background-color: #d4e6f0;
+  color: #1a3a4a;
+  border: 1px solid #7dd3fc;
+}
+
+[data-theme="light"] .badge-danger {
+  background-color: #f5d4d4;
+  color: #5a1a1a;
+  border: 1px solid #fca5a5;
+}
+
+/* Global Link Styles - Theme Aware */
 a {
-  color: #7dd3fc;
+  color: var(--link-color);
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
 a:hover {
-  color: #a0d4f0;
+  color: var(--link-hover);
   text-decoration: underline;
 }
 
 a:visited {
-  color: #7dd3fc;
+  color: var(--link-color);
 }
 
 a:active {
-  color: #5ba3d0;
+  color: var(--link-hover);
 }
 
 /* Link styles for different contexts */
 .back-link {
-  color: #7dd3fc;
+  color: var(--link-color);
   display: inline-flex;
   align-items: center;
   gap: 5px;
@@ -191,7 +290,7 @@ a:active {
 }
 
 .back-link:hover {
-  color: #a0d4f0;
+  color: var(--link-hover);
   text-decoration: underline;
   transform: translateX(-3px);
 }
@@ -200,7 +299,7 @@ a:active {
 .info-section a,
 .detail-item a,
 .sidebar-card a {
-  color: #7dd3fc;
+  color: var(--link-color);
   font-weight: 500;
   border-bottom: 1px solid transparent;
   transition: all 0.3s;
@@ -209,8 +308,8 @@ a:active {
 .info-section a:hover,
 .detail-item a:hover,
 .sidebar-card a:hover {
-  color: #a0d4f0;
-  border-bottom-color: #7dd3fc;
+  color: var(--link-hover);
+  border-bottom-color: var(--link-color);
   text-decoration: none;
 }
 

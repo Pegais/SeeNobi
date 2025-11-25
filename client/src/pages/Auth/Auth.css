@@ -5,23 +5,25 @@
   align-items: center;
   min-height: calc(100vh - 200px);
   padding: 20px;
-  background: #2d2d2d;
+  background: var(--bg-primary);
+  transition: background-color 0.3s ease;
 }
 
 .auth-card {
-  background: #3d4758;
+  background: var(--bg-secondary);
   padding: 30px;
   border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 6px var(--shadow-sm);
   width: 100%;
   max-width: 400px;
-  border: 1px solid #4a5568;
+  border: 1px solid var(--border-color);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .auth-card h2 {
   margin-bottom: 30px;
   text-align: center;
-  color: #ffffff;
+  color: var(--text-primary);
 }
 
 .form-group {
@@ -36,7 +38,7 @@
 .auth-link {
   text-align: center;
   margin-top: 20px;
-  color: #a0a0a0;
+  color: var(--text-tertiary);
 }
 
 .auth-link a {

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Logo from '../Logo/Logo';
+import ThemeToggle from '../ThemeToggle/ThemeToggle';
 import './Layout.css';
 
 const Layout = ({ children }) => {
@@ -21,6 +22,7 @@ const Layout = ({ children }) => {
           <Link to="/" className="nav-logo" onClick={() => setMenuOpen(false)}>
             <Logo size="small" />
           </Link>
+          <ThemeToggle />
           <button 
             className="mobile-menu-toggle"
             onClick={() => setMenuOpen(!menuOpen)}

@@ -1,12 +1,13 @@
 /* Mobile First - Base Styles */
 .rating-card {
-  background: #3d4758;
+  background: var(--bg-secondary);
   padding: 20px;
   border-radius: 12px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 4px var(--shadow-sm);
   max-width: 100%;
   margin: 0 auto;
-  border: 1px solid #4a5568;
+  border: 1px solid var(--border-color);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .rating-group {
@@ -14,17 +15,17 @@
 }
 
 .info-box {
-  background: #2d2d2d;
+  background: var(--bg-tertiary);
   padding: 15px;
   border-radius: 8px;
   margin-bottom: 20px;
-  border-left: 4px solid #718096;
-  border: 1px solid #4a5568;
+  border-left: 4px solid var(--accent-color);
+  border: 1px solid var(--border-color);
 }
 
 .info-box p {
   margin: 0;
-  color: #a0a0a0;
+  color: var(--text-tertiary);
   font-size: 13px;
 }
 

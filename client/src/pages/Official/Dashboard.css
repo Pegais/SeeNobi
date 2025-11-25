@@ -1,6 +1,6 @@
 /* Mobile First - Base Styles */
 .official-info {
-  color: #a0a0a0;
+  color: var(--text-tertiary);
   margin-top: 5px;
   font-size: 14px;
 }

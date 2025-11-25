@@ -1,12 +1,12 @@
 import React from 'react';
 import './ScoreDisplay.css';
 
-const ScoreDisplay = ({ type, score, maxScore, label, size = 'medium' }) => {
+const ScoreDisplay = ({ type, score, maxScore, label, size = 'medium', compact = false }) => {
   const percentage = (score / maxScore) * 100;
   const levelInfo = getLevelInfo(type, score, maxScore);
   
   return (
-    <div className={`score-display score-${type} score-${size}`}>
+    <div className={`score-display score-${type} score-${size} ${compact ? 'score-compact' : ''}`}>
       <div className="score-header">
         <span className="score-label">{label}</span>
         <span className={`score-level score-level-${levelInfo.color}`}>

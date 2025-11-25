@@ -1,12 +1,13 @@
 /* Mobile First - Base Styles */
 .score-display {
-  background: #3d4758;
+  background: var(--bg-secondary);
   border-radius: 12px;
   padding: 15px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 6px var(--shadow-sm);
   position: relative;
   overflow: hidden;
-  border: 1px solid #4a5568;
+  border: 1px solid var(--border-color);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .score-display::before {
@@ -30,7 +31,7 @@
 
 .score-label {
   font-weight: 600;
-  color: #ffffff;
+  color: var(--text-primary);
   font-size: 13px;
 }
 
@@ -39,8 +40,8 @@
   padding: 4px 10px;
   border-radius: 12px;
   font-weight: 600;
-  background: #3d4758;
-  color: #e0e0e0;
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
   white-space: nowrap;
 }
 
@@ -91,7 +92,7 @@
 
 .score-circle-bg {
   fill: none;
-  stroke: #4a5568;
+  stroke: var(--border-color);
   stroke-width: 8;
 }
 
@@ -129,12 +130,12 @@
 .score-number {
   font-size: 18px;
   font-weight: bold;
-  color: #ffffff;
+  color: var(--text-primary);
 }
 
 .score-max {
   font-size: 11px;
-  color: #a0a0a0;
+  color: var(--text-tertiary);
 }
 
 .score-icon {
@@ -149,7 +150,7 @@
 
 .score-progress-bar {
   height: 6px;
-  background: #4a5568;
+  background: var(--border-color);
   border-radius: 4px;
   overflow: hidden;
   margin-bottom: 8px;
@@ -179,7 +180,7 @@
 
 .score-next-level {
   font-size: 11px;
-  color: #a0a0a0;
+  color: var(--text-tertiary);
   text-align: center;
 }
 

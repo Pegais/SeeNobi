@@ -1,5 +1,6 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
+import { ThemeProvider } from './contexts/ThemeContext';
 import Layout from './components/Layout/Layout';
 import Home from './pages/Home/Home';
 import Login from './pages/Auth/Login';
@@ -20,8 +21,9 @@ import AnalyticsPage from './pages/Analytics/AnalyticsPage';
 
 function App() {
   return (
-    <Layout>
-      <Routes>
+    <ThemeProvider>
+      <Layout>
+        <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
@@ -50,8 +52,9 @@ function App() {
         
         {/* Analytics */}
         <Route path="/analytics" element={<AnalyticsPage />} />
-      </Routes>
-    </Layout>
+        </Routes>
+      </Layout>
+    </ThemeProvider>
   );
 }
 

@@ -1,6 +1,6 @@
 /* Mobile First - Base Styles */
 .company-type {
-  color: #a0a0a0;
+  color: var(--text-tertiary);
   font-size: 16px;
   margin-top: 5px;
 }
@@ -14,13 +14,13 @@
 .info-item label {
   display: block;
   font-weight: 600;
-  color: #a0a0a0;
+  color: var(--text-tertiary);
   margin-bottom: 5px;
   font-size: 13px;
 }
 
 .info-item p {
-  color: #e0e0e0;
+  color: var(--text-secondary);
   font-size: 14px;
 }
 
