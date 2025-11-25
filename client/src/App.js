@@ -8,6 +8,7 @@ import Register from './pages/Auth/Register';
 import CitizenDashboard from './pages/Citizen/Dashboard';
 import CitizenProfile from './pages/Citizen/Profile';
 import SubmitIssue from './pages/Citizen/SubmitIssue';
+import AddressVerification from './pages/Citizen/AddressVerification';
 import IssueDetail from './pages/Issue/IssueDetail';
 import IssuesList from './pages/Issue/IssuesList';
 import OfficialDashboard from './pages/Official/Dashboard';
@@ -32,6 +33,7 @@ function App() {
         <Route path="/citizen/dashboard" element={<CitizenDashboard />} />
         <Route path="/citizen/profile" element={<CitizenProfile />} />
         <Route path="/citizen/submit-issue" element={<SubmitIssue />} />
+        <Route path="/citizen/verify-address" element={<AddressVerification />} />
         
         {/* Issue Routes */}
         <Route path="/issues" element={<IssuesList />} />

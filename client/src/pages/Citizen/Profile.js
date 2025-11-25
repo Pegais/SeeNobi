@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { mockUsers } from '../../data/mockData';
 import './Profile.css';
 
@@ -36,7 +37,12 @@ const CitizenProfile = () => {
         </div>
 
         <div className="profile-card">
-          <h2>Addresses</h2>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+            <h2 style={{ margin: 0 }}>Addresses</h2>
+            <Link to="/citizen/verify-address" className="btn btn-primary">
+              Verify/Update Address
+            </Link>
+          </div>
           {user.addresses.map(addr => (
             <div key={addr.addressId} className="address-item">
               <p><strong>Area Code:</strong> {addr.areaCode}</p>

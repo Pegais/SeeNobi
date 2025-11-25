@@ -212,6 +212,62 @@
   word-break: break-all;
 }
 
+/* Location Accuracy Badge */
+.location-accuracy-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.location-accuracy-badge.accuracy-excellent {
+  background: rgba(76, 175, 80, 0.1);
+  border: 1px solid var(--success-color);
+  color: var(--success-color);
+}
+
+.location-accuracy-badge.accuracy-good {
+  background: rgba(255, 193, 7, 0.1);
+  border: 1px solid var(--warning-color);
+  color: var(--warning-color);
+}
+
+.location-accuracy-badge.accuracy-fair {
+  background: rgba(255, 152, 0, 0.1);
+  border: 1px solid #ff9800;
+  color: #ff9800;
+}
+
+.location-accuracy-badge.accuracy-poor {
+  background: rgba(244, 67, 54, 0.1);
+  border: 1px solid var(--danger-color);
+  color: var(--danger-color);
+}
+
+.accuracy-icon {
+  font-size: 16px;
+}
+
+.accuracy-text {
+  font-weight: 600;
+}
+
+.accuracy-value {
+  font-size: 11px;
+  opacity: 0.8;
+}
+
+.accuracy-action {
+  margin-left: auto;
+  font-size: 11px;
+  text-decoration: underline;
+  color: inherit;
+}
+
 .sidebar-location-error {
   align-items: center;
   text-align: center;

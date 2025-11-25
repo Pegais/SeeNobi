@@ -95,6 +95,47 @@ const getLocationFromIP = async () => {
   }
 };
 
+// Geocode address to coordinates (address-based location)
+export const geocodeAddress = async (address) => {
+  try {
+    const response = await fetch(
+      `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}&limit=1&addressdetails=1`,
+      {
+        headers: {
+          'User-Agent': 'SeeNobi Platform - Civic Engagement App'
+        }
+      }
+    );
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    
+    if (data && data.length > 0) {
+      const result = data[0];
+      return {
+        latitude: parseFloat(result.lat),
+        longitude: parseFloat(result.lon),
+        locationName: result.display_name,
+        city: result.address?.city || result.address?.town || result.address?.municipality || '',
+        area: result.address?.suburb || result.address?.neighbourhood || result.address?.village || '',
+        region: result.address?.state_district || result.address?.state || '',
+        country: result.address?.country || '',
+        postalCode: result.address?.postcode || '',
+        accuracy: 50, // Address-based is typically accurate to ~50m
+        source: 'address_geocoded'
+      };
+    }
+    
+    throw new Error('No results found for address');
+  } catch (error) {
+    console.error('Error in address geocoding:', error);
+    throw error;
+  }
+};
+
 // Reverse geocoding using OpenStreetMap Nominatim (free, no API key)
 export const reverseGeocode = async (lat, lon) => {
   try {
@@ -176,13 +217,27 @@ export const reverseGeocode = async (lat, lon) => {
   }
 };
 
-// Get user location with caching - Hybrid approach (GPS + IP fallback)
-export const getUserLocation = () => {
+// Get user location with caching - Hybrid approach (GPS + IP fallback + Address fallback)
+export const getUserLocation = (options = {}) => {
   return new Promise(async (resolve, reject) => {
+    const { useAddress, address } = options;
+    
+    // If address is provided, use address geocoding first
+    if (useAddress && address) {
+      try {
+        const addressLocation = await geocodeAddress(address);
+        cacheLocation(addressLocation);
+        resolve(addressLocation);
+        return;
+      } catch (error) {
+        console.log('Address geocoding failed, trying GPS...', error);
+        // Fall through to GPS
+      }
+    }
+    
     // Check cache first
     const cached = getCachedLocation();
-    if (cached && cached.latitude && cached.longitude) {
-      // Check if cache is still valid (less than 1 hour old)
+    if (cached && cached.latitude && cached.longitude && !options.forceRefresh) {
       const cacheAge = cached.cachedAt 
         ? (Date.now() - new Date(cached.cachedAt).getTime()) / 1000 / 60 // minutes
         : Infinity;
@@ -212,7 +267,6 @@ export const getUserLocation = () => {
               cached.latitude,
               cached.longitude
             )) {
-              // Location hasn't changed significantly, use cached location name
               resolve(cached);
               return;
             }
@@ -241,18 +295,17 @@ export const getUserLocation = () => {
           console.log('GPS geolocation failed, trying IP-based fallback...', error);
           try {
             const ipLocation = await getLocationFromIP();
-            // Cache the IP-based location
             cacheLocation(ipLocation);
             resolve(ipLocation);
           } catch (ipError) {
             // Both methods failed
-            reject(new Error('Unable to determine location. GPS and IP geolocation both failed.'));
+            reject(new Error('Unable to determine location. Please use address verification or document upload.'));
           }
         },
         {
           enableHighAccuracy: true,
-          timeout: 10000,
-          maximumAge: 300000 // 5 minutes
+          timeout: 30000, // ✅ IMPROVED: Increased from 10s to 30s
+          maximumAge: 0    // ✅ IMPROVED: Always get fresh position (no stale cache)
         }
       );
     } else {
@@ -263,8 +316,23 @@ export const getUserLocation = () => {
         cacheLocation(ipLocation);
         resolve(ipLocation);
       } catch (error) {
-        reject(new Error('Geolocation not supported and IP geolocation failed.'));
+        reject(new Error('Geolocation not supported and IP geolocation failed. Please use address verification.'));
       }
     }
   });
+};
+
+// Check if location accuracy is acceptable
+export const isLocationAccurate = (location) => {
+  if (!location || !location.accuracy) return false;
+  return location.accuracy <= 100; // Acceptable if within 100m
+};
+
+// Get accuracy level description
+export const getAccuracyLevel = (accuracy) => {
+  if (!accuracy) return { level: 'unknown', color: 'gray', text: 'Unknown', needsVerification: true };
+  if (accuracy < 20) return { level: 'excellent', color: 'green', text: 'Very Accurate', needsVerification: false };
+  if (accuracy < 50) return { level: 'good', color: 'yellow', text: 'Accurate', needsVerification: false };
+  if (accuracy < 100) return { level: 'fair', color: 'orange', text: 'Approximate', needsVerification: true };
+  return { level: 'poor', color: 'red', text: 'Inaccurate - Please verify', needsVerification: true };
 };

@@ -3,8 +3,28 @@ import { Link, useNavigate } from 'react-router-dom';
 import { mockIssues, mockUsers } from '../../data/mockData';
 import ScoreDisplay from '../../components/ScoreDisplay/ScoreDisplay';
 import Badge from '../../components/Badge/Badge';
-import { getUserLocation, calculateDistance } from '../../utils/locationUtils';
+import { getUserLocation, calculateDistance, getAccuracyLevel, isLocationAccurate } from '../../utils/locationUtils';
 import './Home.css';
+
+// Location Accuracy Indicator Component
+const LocationAccuracyIndicator = ({ location }) => {
+  if (!location || !location.accuracy) return null;
+  
+  const accuracyInfo = getAccuracyLevel(location.accuracy);
+  
+  return (
+    <div className={`location-accuracy-badge accuracy-${accuracyInfo.level}`}>
+      <span className="accuracy-icon">📍</span>
+      <span className="accuracy-text">{accuracyInfo.text}</span>
+      <span className="accuracy-value">±{Math.round(location.accuracy)}m</span>
+      {accuracyInfo.needsVerification && (
+        <Link to="/citizen/verify-address" className="accuracy-action">
+          Verify Location
+        </Link>
+      )}
+    </div>
+  );
+};
 
 const Home = () => {
   const navigate = useNavigate();
@@ -92,6 +112,11 @@ const Home = () => {
       .then(location => {
         setUserLocation(location);
         setLocationLoading(false);
+        
+        // ✅ IMPROVED: Check accuracy and warn if needed
+        if (!isLocationAccurate(location)) {
+          console.warn('Location accuracy is low:', location.accuracy, 'm. Consider verifying your address.');
+        }
       })
       .catch(error => {
         console.error('Error getting location:', error);
@@ -225,6 +250,8 @@ const Home = () => {
                       {userLocation.latitude.toFixed(4)}, {userLocation.longitude.toFixed(4)}
                     </span>
                   </div>
+                  {/* ✅ IMPROVED: Show accuracy indicator */}
+                  <LocationAccuracyIndicator location={userLocation} />
                 </div>
               ) : (
                 <div className="sidebar-location-error">
