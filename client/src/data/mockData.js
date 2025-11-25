@@ -59,6 +59,8 @@ export const mockIssues = [
     areaCode: 'DEL-001',
     images: ['https://via.placeholder.com/400x300?text=Pothole'],
     status: 'in_progress',
+    likes: 24,
+    dislikes: 3,
     verificationStatus: {
       isVerified: true,
       verifiedBy: 'official-001',
@@ -103,6 +105,8 @@ export const mockIssues = [
     areaCode: 'DEL-002',
     images: ['https://via.placeholder.com/400x300?text=Garbage'],
     status: 'under_review',
+    likes: 12,
+    dislikes: 1,
     verificationStatus: {
       isVerified: false,
       verificationReasons: [],
@@ -132,6 +136,8 @@ export const mockIssues = [
     areaCode: 'DEL-001',
     images: ['https://via.placeholder.com/400x300?text=Street+Light'],
     status: 'resolved',
+    likes: 45,
+    dislikes: 2,
     verificationStatus: {
       isVerified: true,
       verifiedBy: 'official-001',

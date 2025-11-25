@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './SubmitIssue.css';
 
@@ -11,12 +11,71 @@ const SubmitIssue = () => {
     longitude: '',
     images: []
   });
+  const [locationStatus, setLocationStatus] = useState('idle'); // idle, loading, success, error
+  const [locationError, setLocationError] = useState('');
   const navigate = useNavigate();
+
+  // Get user's current location on component mount
+  useEffect(() => {
+    getCurrentLocation();
+  }, []);
+
+  const getCurrentLocation = () => {
+    if (!navigator.geolocation) {
+      setLocationStatus('error');
+      setLocationError('Geolocation is not supported by your browser');
+      return;
+    }
+
+    setLocationStatus('loading');
+    setLocationError('');
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setFormData(prev => ({
+          ...prev,
+          latitude: position.coords.latitude.toString(),
+          longitude: position.coords.longitude.toString()
+        }));
+        setLocationStatus('success');
+      },
+      (error) => {
+        setLocationStatus('error');
+        switch(error.code) {
+          case error.PERMISSION_DENIED:
+            setLocationError('Location access denied. Please enable location permissions.');
+            break;
+          case error.POSITION_UNAVAILABLE:
+            setLocationError('Location information unavailable.');
+            break;
+          case error.TIMEOUT:
+            setLocationError('Location request timed out.');
+            break;
+          default:
+            setLocationError('An unknown error occurred while getting location.');
+            break;
+        }
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0
+      }
+    );
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    
+    // Validate location
+    if (!formData.latitude || !formData.longitude) {
+      alert('Please allow location access to submit an issue.');
+      getCurrentLocation();
+      return;
+    }
+    
     // Mock submission
-    alert('Issue submitted successfully! (Mock)');
+    alert(`Issue submitted successfully! (Mock)\nLocation: ${formData.latitude}, ${formData.longitude}`);
     navigate('/citizen/dashboard');
   };
 
@@ -72,31 +131,62 @@ const SubmitIssue = () => {
             </select>
           </div>
 
-          <div className="form-row">
-            <div className="form-group">
-              <label className="label">Latitude *</label>
-              <input
-                type="number"
-                step="any"
-                className="input"
-                value={formData.latitude}
-                onChange={(e) => setFormData({ ...formData, latitude: e.target.value })}
-                placeholder="28.6139"
-                required
-              />
+          <div className="form-group">
+            <label className="label">Location *</label>
+            <div className="location-container">
+              {locationStatus === 'loading' && (
+                <div className="location-status loading">
+                  <span className="location-icon">📍</span>
+                  <span>Getting your location...</span>
+                </div>
+              )}
+              {locationStatus === 'success' && (
+                <div className="location-status success">
+                  <span className="location-icon">✅</span>
+                  <span>Location captured: {formData.latitude}, {formData.longitude}</span>
+                  <button 
+                    type="button" 
+                    className="btn-refresh-location"
+                    onClick={getCurrentLocation}
+                    title="Refresh location"
+                  >
+                    🔄
+                  </button>
+                </div>
+              )}
+              {locationStatus === 'error' && (
+                <div className="location-status error">
+                  <span className="location-icon">⚠️</span>
+                  <span>{locationError}</span>
+                  <button 
+                    type="button" 
+                    className="btn-refresh-location"
+                    onClick={getCurrentLocation}
+                    title="Try again"
+                  >
+                    🔄 Retry
+                  </button>
+                </div>
+              )}
+              {locationStatus === 'idle' && (
+                <div className="location-status">
+                  <span className="location-icon">📍</span>
+                  <span>Click to get your location</span>
+                  <button 
+                    type="button" 
+                    className="btn-refresh-location"
+                    onClick={getCurrentLocation}
+                  >
+                    Get Location
+                  </button>
+                </div>
+              )}
             </div>
-            <div className="form-group">
-              <label className="label">Longitude *</label>
-              <input
-                type="number"
-                step="any"
-                className="input"
-                value={formData.longitude}
-                onChange={(e) => setFormData({ ...formData, longitude: e.target.value })}
-                placeholder="77.2090"
-                required
-              />
-            </div>
+            {locationStatus !== 'success' && (
+              <p className="location-hint">
+                Location is required to submit an issue. Please allow location access when prompted.
+              </p>
+            )}
           </div>
 
           <div className="form-group">

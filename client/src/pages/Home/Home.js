@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { mockIssues, mockUsers } from '../../data/mockData';
 import ScoreDisplay from '../../components/ScoreDisplay/ScoreDisplay';
 import Badge from '../../components/Badge/Badge';
+import { getUserLocation, calculateDistance } from '../../utils/locationUtils';
 import './Home.css';
 
 const Home = () => {
@@ -10,6 +11,10 @@ const Home = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [likedPosts, setLikedPosts] = useState(new Set());
   const [dislikedPosts, setDislikedPosts] = useState(new Set());
+  const [issueLikes, setIssueLikes] = useState({});
+  const [issueDislikes, setIssueDislikes] = useState({});
+  const [userLocation, setUserLocation] = useState(null);
+  const [locationLoading, setLocationLoading] = useState(true);
   
   // Mock login status - Set mock user if not already logged in
   const getMockUser = () => {
@@ -35,43 +40,133 @@ const Home = () => {
   const isLoggedIn = true; // Always show as logged in for demo
   const userData = mockUsers.citizen; // Use mock citizen data
   
-  // Sort issues by recent activity (most recent first)
-  const sortedIssues = [...mockIssues].sort((a, b) => 
-    new Date(b.updatedAt || b.createdAt) - new Date(a.updatedAt || a.createdAt)
-  );
+  // Sort issues by location proximity and recent activity
+  const sortedIssues = useMemo(() => {
+    const issues = [...mockIssues];
+    
+    // If user location is available, sort by proximity first
+    if (userLocation && userLocation.latitude && userLocation.longitude) {
+      issues.forEach(issue => {
+        if (issue.geotag && issue.geotag.lat && issue.geotag.long) {
+          issue.distance = calculateDistance(
+            userLocation.latitude,
+            userLocation.longitude,
+            issue.geotag.lat,
+            issue.geotag.long
+          );
+        } else {
+          issue.distance = Infinity; // Issues without location go to the end
+        }
+      });
+      
+      // Sort by distance (closest first), then by recent activity
+      return issues.sort((a, b) => {
+        if (a.distance !== b.distance) {
+          return a.distance - b.distance;
+        }
+        return new Date(b.updatedAt || b.createdAt) - new Date(a.updatedAt || a.createdAt);
+      });
+    }
+    
+    // If no location, sort by recent activity only
+    return issues.sort((a, b) => 
+      new Date(b.updatedAt || b.createdAt) - new Date(a.updatedAt || a.createdAt)
+    );
+  }, [userLocation, mockIssues]);
+
+  // Initialize likes/dislikes from mock data
+  useEffect(() => {
+    const initialLikes = {};
+    const initialDislikes = {};
+    mockIssues.forEach(issue => {
+      initialLikes[issue.issueId] = issue.likes || 0;
+      initialDislikes[issue.issueId] = issue.dislikes || 0;
+    });
+    setIssueLikes(initialLikes);
+    setIssueDislikes(initialDislikes);
+  }, []);
+
+  // Get user location on mount
+  useEffect(() => {
+    getUserLocation()
+      .then(location => {
+        setUserLocation(location);
+        setLocationLoading(false);
+      })
+      .catch(error => {
+        console.error('Error getting location:', error);
+        setLocationLoading(false);
+      });
+  }, []);
 
   const handleLike = (issueId) => {
-    setLikedPosts(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(issueId)) {
+    const isLiked = likedPosts.has(issueId);
+    const isDisliked = dislikedPosts.has(issueId);
+    const currentLikes = issueLikes[issueId] ?? (mockIssues.find(i => i.issueId === issueId)?.likes || 0);
+    const currentDislikes = issueDislikes[issueId] ?? (mockIssues.find(i => i.issueId === issueId)?.dislikes || 0);
+    
+    if (isLiked) {
+      // Unlike
+      setLikedPosts(prev => {
+        const newSet = new Set(prev);
         newSet.delete(issueId);
-      } else {
+        return newSet;
+      });
+      setIssueLikes(prev => ({ ...prev, [issueId]: Math.max(0, currentLikes - 1) }));
+    } else {
+      // Like
+      setLikedPosts(prev => {
+        const newSet = new Set(prev);
         newSet.add(issueId);
-        setDislikedPosts(prevDis => {
-          const newDisSet = new Set(prevDis);
-          newDisSet.delete(issueId);
-          return newDisSet;
+        return newSet;
+      });
+      setIssueLikes(prev => ({ ...prev, [issueId]: currentLikes + 1 }));
+      
+      if (isDisliked) {
+        // Remove dislike
+        setDislikedPosts(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(issueId);
+          return newSet;
         });
+        setIssueDislikes(prev => ({ ...prev, [issueId]: Math.max(0, currentDislikes - 1) }));
       }
-      return newSet;
-    });
+    }
   };
 
   const handleDislike = (issueId) => {
-    setDislikedPosts(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(issueId)) {
+    const isLiked = likedPosts.has(issueId);
+    const isDisliked = dislikedPosts.has(issueId);
+    const currentLikes = issueLikes[issueId] ?? (mockIssues.find(i => i.issueId === issueId)?.likes || 0);
+    const currentDislikes = issueDislikes[issueId] ?? (mockIssues.find(i => i.issueId === issueId)?.dislikes || 0);
+    
+    if (isDisliked) {
+      // Remove dislike
+      setDislikedPosts(prev => {
+        const newSet = new Set(prev);
         newSet.delete(issueId);
-      } else {
+        return newSet;
+      });
+      setIssueDislikes(prev => ({ ...prev, [issueId]: Math.max(0, currentDislikes - 1) }));
+    } else {
+      // Dislike
+      setDislikedPosts(prev => {
+        const newSet = new Set(prev);
         newSet.add(issueId);
-        setLikedPosts(prevLike => {
-          const newLikeSet = new Set(prevLike);
-          newLikeSet.delete(issueId);
-          return newLikeSet;
+        return newSet;
+      });
+      setIssueDislikes(prev => ({ ...prev, [issueId]: currentDislikes + 1 }));
+      
+      if (isLiked) {
+        // Remove like
+        setLikedPosts(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(issueId);
+          return newSet;
         });
+        setIssueLikes(prev => ({ ...prev, [issueId]: Math.max(0, currentLikes - 1) }));
       }
-      return newSet;
-    });
+    }
   };
 
   return (
@@ -97,6 +192,64 @@ const Home = () => {
                 <h3>{userData.displayName}</h3>
                 <p className="user-type-badge">Citizen</p>
               </div>
+            </div>
+
+            {/* Location Display Box - Above Trust Score */}
+            <div className="sidebar-location-box">
+              <div className="sidebar-location-header">
+                <span className="sidebar-location-icon">📍</span>
+                <span className="sidebar-location-title">Your Location</span>
+              </div>
+              {locationLoading ? (
+                <div className="sidebar-location-loading">
+                  <span className="location-spinner">⏳</span>
+                  <span>Getting location...</span>
+                </div>
+              ) : userLocation ? (
+                <div className="sidebar-location-content">
+                  <div className="sidebar-location-name">
+                    <span className="sidebar-location-label">Area:</span>
+                    <span className="sidebar-location-value">
+                      {userLocation.area || userLocation.city || userLocation.locationName || 'Unknown'}
+                    </span>
+                  </div>
+                  <div className="sidebar-location-city">
+                    <span className="sidebar-location-label">City:</span>
+                    <span className="sidebar-location-value">
+                      {userLocation.city || userLocation.region || 'Unknown'}
+                    </span>
+                  </div>
+                  <div className="sidebar-location-coords">
+                    <span className="sidebar-location-label">Coords:</span>
+                    <span className="sidebar-location-coord-value">
+                      {userLocation.latitude.toFixed(4)}, {userLocation.longitude.toFixed(4)}
+                    </span>
+                  </div>
+                </div>
+              ) : (
+                <div className="sidebar-location-error">
+                  <span className="location-icon">⚠️</span>
+                  <span>Location unavailable</span>
+                  <button 
+                    type="button" 
+                    className="btn-refresh-location-sidebar"
+                    onClick={() => {
+                      setLocationLoading(true);
+                      getUserLocation()
+                        .then(location => {
+                          setUserLocation(location);
+                          setLocationLoading(false);
+                        })
+                        .catch(error => {
+                          console.error('Error getting location:', error);
+                          setLocationLoading(false);
+                        });
+                    }}
+                  >
+                    Retry
+                  </button>
+                </div>
+              )}
             </div>
 
             <div className="sidebar-scores">
@@ -262,21 +415,31 @@ const Home = () => {
                 </div>
               </div>
 
-              {/* Like/Dislike Buttons - Mobile Style */}
-              <div className="post-reactions-mobile">
+              {/* Like/Dislike Buttons - YouTube Style */}
+              <div className="post-reactions-youtube">
                 <button 
-                  className={`reaction-btn dislike-btn ${dislikedPosts.has(issue.issueId) ? 'active' : ''}`}
-                  onClick={() => handleDislike(issue.issueId)}
-                  aria-label="Dislike"
-                >
-                  <span className="reaction-icon">👎</span>
-                </button>
-                <button 
-                  className={`reaction-btn like-btn ${likedPosts.has(issue.issueId) ? 'active' : ''}`}
+                  className={`youtube-btn like-btn ${likedPosts.has(issue.issueId) ? 'active' : ''}`}
                   onClick={() => handleLike(issue.issueId)}
                   aria-label="Like"
                 >
-                  <span className="reaction-icon">👍</span>
+                  <span className="youtube-icon">👍</span>
+                  <span className="youtube-count">
+                    {issueLikes[issue.issueId] !== undefined 
+                      ? issueLikes[issue.issueId] 
+                      : (issue.likes || 0)}
+                  </span>
+                </button>
+                <button 
+                  className={`youtube-btn dislike-btn ${dislikedPosts.has(issue.issueId) ? 'active' : ''}`}
+                  onClick={() => handleDislike(issue.issueId)}
+                  aria-label="Dislike"
+                >
+                  <span className="youtube-icon">👎</span>
+                  <span className="youtube-count">
+                    {issueDislikes[issue.issueId] !== undefined 
+                      ? issueDislikes[issue.issueId] 
+                      : (issue.dislikes || 0)}
+                  </span>
                 </button>
               </div>
 
@@ -284,22 +447,30 @@ const Home = () => {
               <div className="post-footer">
                 <div className="post-actions">
                   <button 
-                    className={`post-action-btn ${likedPosts.has(issue.issueId) ? 'active' : ''}`}
+                    className={`youtube-btn like-btn ${likedPosts.has(issue.issueId) ? 'active' : ''}`}
                     onClick={() => handleLike(issue.issueId)}
                   >
-                    <span className="action-icon">👍</span>
-                    <span>Like/Agree</span>
+                    <span className="youtube-icon">👍</span>
+                    <span className="youtube-count">
+                      {issueLikes[issue.issueId] !== undefined 
+                        ? issueLikes[issue.issueId] 
+                        : (issue.likes || 0)}
+                    </span>
                   </button>
                   <Link to={`/issues/${issue.issueId}`} className="post-action-btn">
                     <span className="action-icon">💬</span>
                     <span>View Details</span>
                   </Link>
                   <button 
-                    className={`post-action-btn ${dislikedPosts.has(issue.issueId) ? 'active' : ''}`}
+                    className={`youtube-btn dislike-btn ${dislikedPosts.has(issue.issueId) ? 'active' : ''}`}
                     onClick={() => handleDislike(issue.issueId)}
                   >
-                    <span className="action-icon">👎</span>
-                    <span>Dislike/Disagree</span>
+                    <span className="youtube-icon">👎</span>
+                    <span className="youtube-count">
+                      {issueDislikes[issue.issueId] !== undefined 
+                        ? issueDislikes[issue.issueId] 
+                        : (issue.dislikes || 0)}
+                    </span>
                   </button>
                 </div>
               </div>
