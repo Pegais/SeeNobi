@@ -17,7 +17,7 @@ const PrivatePlayerDashboard = () => {
     : relatedIssues.filter(issue => issue.status === filter);
 
   return (
-    <div className="container">
+    <div className="private-player-dashboard-page">
       <div className="dashboard-header">
         <div>
           <h1>Private Player Dashboard</h1>

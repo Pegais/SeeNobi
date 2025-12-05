@@ -16,7 +16,7 @@ const OfficialProfile = () => {
     : 0;
 
   return (
-    <div className="container">
+    <div className="official-profile-page">
       <h1>Official Profile</h1>
       <div className="profile-container">
         <div className="profile-main">

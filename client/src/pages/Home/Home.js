@@ -1,30 +1,9 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { mockIssues, mockUsers } from '../../data/mockData';
-import ScoreDisplay from '../../components/ScoreDisplay/ScoreDisplay';
-import Badge from '../../components/Badge/Badge';
-import { getUserLocation, calculateDistance, getAccuracyLevel, isLocationAccurate } from '../../utils/locationUtils';
+import { getUserLocation, calculateDistance, isLocationAccurate } from '../../utils/locationUtils';
 import './Home.css';
 
-// Location Accuracy Indicator Component
-const LocationAccuracyIndicator = ({ location }) => {
-  if (!location || !location.accuracy) return null;
-  
-  const accuracyInfo = getAccuracyLevel(location.accuracy);
-  
-  return (
-    <div className={`location-accuracy-badge accuracy-${accuracyInfo.level}`}>
-      <span className="accuracy-icon">📍</span>
-      <span className="accuracy-text">{accuracyInfo.text}</span>
-      <span className="accuracy-value">±{Math.round(location.accuracy)}m</span>
-      {accuracyInfo.needsVerification && (
-        <Link to="/citizen/verify-address" className="accuracy-action">
-          Verify Location
-        </Link>
-      )}
-    </div>
-  );
-};
 
 const Home = () => {
   const navigate = useNavigate();
@@ -46,10 +25,7 @@ const Home = () => {
     const mockUser = {
       userId: mockUsers.citizen.userId,
       userType: 'citizen',
-      displayName: mockUsers.citizen.displayName,
-      trustScore: mockUsers.citizen.trustScore,
-      civicSenseScore: mockUsers.citizen.civicSenseScore,
-      itrVerified: mockUsers.citizen.itrVerified
+      displayName: mockUsers.citizen.displayName
     };
     localStorage.setItem('user', JSON.stringify(mockUser));
     localStorage.setItem('token', 'mock-token-12345');
@@ -204,9 +180,7 @@ const Home = () => {
             onClick={() => setSidebarOpen(!sidebarOpen)}
             aria-label="Toggle sidebar"
           >
-            <span className={sidebarOpen ? 'icon-close' : 'icon-menu'}>
-              {sidebarOpen ? '✕' : '☰'}
-            </span>
+            <span>{sidebarOpen ? '×' : '≡'}</span>
           </button>
           <aside className={`left-sidebar ${sidebarOpen ? 'sidebar-open' : ''}`}>
             <div className="sidebar-header">
@@ -215,47 +189,40 @@ const Home = () => {
               </div>
               <div className="sidebar-user-info">
                 <h3>{userData.displayName}</h3>
-                <p className="user-type-badge">Citizen</p>
               </div>
             </div>
 
-            {/* Location Display Box - Above Trust Score */}
+            {/* Location Display */}
             <div className="sidebar-location-box">
               <div className="sidebar-location-header">
-                <span className="sidebar-location-icon">📍</span>
-                <span className="sidebar-location-title">Your Location</span>
+                <span className="sidebar-location-title">Location</span>
               </div>
               {locationLoading ? (
                 <div className="sidebar-location-loading">
-                  <span className="location-spinner">⏳</span>
-                  <span>Getting location...</span>
+                  <span>Loading location...</span>
                 </div>
               ) : userLocation ? (
                 <div className="sidebar-location-content">
                   <div className="sidebar-location-name">
-                    <span className="sidebar-location-label">Area:</span>
+                    <span className="sidebar-location-label">Area</span>
                     <span className="sidebar-location-value">
                       {userLocation.area || userLocation.city || userLocation.locationName || 'Unknown'}
                     </span>
                   </div>
                   <div className="sidebar-location-city">
-                    <span className="sidebar-location-label">City:</span>
+                    <span className="sidebar-location-label">City</span>
                     <span className="sidebar-location-value">
                       {userLocation.city || userLocation.region || 'Unknown'}
                     </span>
                   </div>
-                  <div className="sidebar-location-coords">
-                    <span className="sidebar-location-label">Coords:</span>
-                    <span className="sidebar-location-coord-value">
-                      {userLocation.latitude.toFixed(4)}, {userLocation.longitude.toFixed(4)}
-                    </span>
-                  </div>
-                  {/* ✅ IMPROVED: Show accuracy indicator */}
-                  <LocationAccuracyIndicator location={userLocation} />
+                  {!isLocationAccurate(userLocation) && (
+                    <Link to="/citizen/verify-address" className="btn btn-secondary" style={{ marginTop: '8px', fontSize: '12px', padding: '6px 12px' }}>
+                      Verify Address
+                    </Link>
+                  )}
                 </div>
               ) : (
                 <div className="sidebar-location-error">
-                  <span className="location-icon">⚠️</span>
                   <span>Location unavailable</span>
                   <button 
                     type="button" 
@@ -279,29 +246,12 @@ const Home = () => {
               )}
             </div>
 
-            <div className="sidebar-scores">
-              <ScoreDisplay
-                type="trust"
-                score={userData.trustScore}
-                maxScore={10}
-                label="Trust Score"
-                compact={true}
-              />
-              <ScoreDisplay
-                type="civic"
-                score={userData.civicSenseScore}
-                maxScore={100}
-                label="Civic Sense Score"
-                compact={true}
-              />
-            </div>
-
             <div className="sidebar-stats">
               <div className="stat-item">
                 <span className="stat-value">
                   {mockIssues.filter(i => i.reporterId === userData.userId).length}
                 </span>
-                <span className="stat-label">My Issues</span>
+                <span className="stat-label">Issues</span>
               </div>
               <div className="stat-item">
                 <span className="stat-value">
@@ -313,32 +263,11 @@ const Home = () => {
 
             <div className="sidebar-actions">
               <Link to="/citizen/submit-issue" className="sidebar-action-btn">
-                <span className="action-icon">📝</span>
-                <span>Submit Issue</span>
+                <span>Report Issue</span>
               </Link>
               <Link to="/citizen/profile" className="sidebar-action-btn">
-                <span className="action-icon">👤</span>
-                <span>View Profile</span>
+                <span>Profile</span>
               </Link>
-              <Link to="/analytics" className="sidebar-action-btn">
-                <span className="action-icon">📊</span>
-                <span>Analytics</span>
-              </Link>
-            </div>
-
-            <div className="sidebar-achievements">
-              <h4>Achievements</h4>
-              <div className="achievements-grid">
-                {userData.trustScore >= 7 && (
-                  <Badge type="premium" text="Master" icon="👑" size="small" />
-                )}
-                {userData.civicSenseScore >= 75 && (
-                  <Badge type="success" text="Champion" icon="💎" size="small" />
-                )}
-                {userData.itrVerified && (
-                  <Badge type="verified" text="Tax Compliant" icon="✓" size="small" />
-                )}
-              </div>
             </div>
           </aside>
           {sidebarOpen && (
@@ -352,7 +281,7 @@ const Home = () => {
         {/* Header - Only show if not logged in */}
         {!isLoggedIn && (
           <div className="feed-header-banner">
-            <h1>SeeNobi</h1>
+            <h1>SeeNubee</h1>
             <p className="header-tagline">Decentralized Civic Engagement Platform</p>
             <div className="header-actions">
               <Link to="/register" className="btn btn-primary">Get Started</Link>
@@ -369,21 +298,7 @@ const Home = () => {
                 {userData?.displayName.charAt(userData.displayName.length - 1)}
               </div>
               <Link to="/citizen/submit-issue" className="create-post-input">
-                What's the issue in your area?
-              </Link>
-            </div>
-            <div className="create-post-actions">
-              <Link to="/citizen/submit-issue" className="post-action-item">
-                <span className="action-icon">📷</span>
-                <span>Photo</span>
-              </Link>
-              <Link to="/citizen/submit-issue" className="post-action-item">
-                <span className="action-icon">📍</span>
-                <span>Location</span>
-              </Link>
-              <Link to="/citizen/submit-issue" className="post-action-item">
-                <span className="action-icon">🏷️</span>
-                <span>Category</span>
+                Report an issue in your area
               </Link>
             </div>
           </div>
@@ -406,17 +321,10 @@ const Home = () => {
                         day: 'numeric',
                         year: 'numeric'
                       })} · {issue.areaCode}
-                      {issue.areaWeighting.reporterIsLocal && (
-                        <span className="local-badge">📍 Local</span>
-                      )}
                     </div>
                   </div>
                 </div>
-                <Badge 
-                  type={getStatusColor(issue.status)} 
-                  text={issue.status.replace('_', ' ')} 
-                  size="small" 
-                />
+                <span className="post-status">{issue.status.replace('_', ' ')}</span>
               </div>
 
               <div className="post-content">
@@ -432,12 +340,12 @@ const Home = () => {
                 )}
 
                 <div className="post-tags">
-                  <Badge type="info" text={issue.category} size="small" />
+                  <span className="post-category">{issue.category}</span>
                   {issue.verificationStatus.isVerified && (
-                    <Badge type="verified" text="Verified" icon="✓" size="small" />
+                    <span className="post-verified">Verified</span>
                   )}
                   {issue.assignedTo && (
-                    <Badge type="info" text="Assigned" icon="👤" size="small" />
+                    <span className="post-assigned">Assigned</span>
                   )}
                 </div>
               </div>
@@ -447,9 +355,9 @@ const Home = () => {
                 <button 
                   className={`youtube-btn like-btn ${likedPosts.has(issue.issueId) ? 'active' : ''}`}
                   onClick={() => handleLike(issue.issueId)}
-                  aria-label="Like"
+                  aria-label="Agree"
                 >
-                  <span className="youtube-icon">👍</span>
+                  <span className="youtube-icon">Agree</span>
                   <span className="youtube-count">
                     {issueLikes[issue.issueId] !== undefined 
                       ? issueLikes[issue.issueId] 
@@ -459,9 +367,9 @@ const Home = () => {
                 <button 
                   className={`youtube-btn dislike-btn ${dislikedPosts.has(issue.issueId) ? 'active' : ''}`}
                   onClick={() => handleDislike(issue.issueId)}
-                  aria-label="Dislike"
+                  aria-label="Disagree"
                 >
-                  <span className="youtube-icon">👎</span>
+                  <span className="youtube-icon">Disagree</span>
                   <span className="youtube-count">
                     {issueDislikes[issue.issueId] !== undefined 
                       ? issueDislikes[issue.issueId] 
@@ -477,7 +385,7 @@ const Home = () => {
                     className={`youtube-btn like-btn ${likedPosts.has(issue.issueId) ? 'active' : ''}`}
                     onClick={() => handleLike(issue.issueId)}
                   >
-                    <span className="youtube-icon">👍</span>
+                    <span className="youtube-icon">Agree</span>
                     <span className="youtube-count">
                       {issueLikes[issue.issueId] !== undefined 
                         ? issueLikes[issue.issueId] 
@@ -485,14 +393,13 @@ const Home = () => {
                     </span>
                   </button>
                   <Link to={`/issues/${issue.issueId}`} className="post-action-btn">
-                    <span className="action-icon">💬</span>
                     <span>View Details</span>
                   </Link>
                   <button 
                     className={`youtube-btn dislike-btn ${dislikedPosts.has(issue.issueId) ? 'active' : ''}`}
                     onClick={() => handleDislike(issue.issueId)}
                   >
-                    <span className="youtube-icon">👎</span>
+                    <span className="youtube-icon">Disagree</span>
                     <span className="youtube-count">
                       {issueDislikes[issue.issueId] !== undefined 
                         ? issueDislikes[issue.issueId] 
@@ -513,46 +420,29 @@ const Home = () => {
           onClick={() => navigate('/')}
           aria-label="Home"
         >
-          <span className="nav-icon">🏠</span>
           <span className="nav-label">Home</span>
         </button>
         <button 
           className="nav-item"
           onClick={() => navigate('/issues')}
-          aria-label="History"
+          aria-label="Issues"
         >
-          <span className="nav-icon">🔄</span>
-          <span className="nav-label">History</span>
+          <span className="nav-label">Issues</span>
         </button>
         <Link 
           to="/citizen/submit-issue"
           className="nav-item nav-add"
-          aria-label="Add Issue"
+          aria-label="Report Issue"
         >
-          <span className="nav-icon">➕</span>
+          <span className="nav-label">+</span>
         </Link>
-        <button 
+        <Link 
+          to="/citizen/profile"
           className="nav-item"
-          onClick={() => {
-            const firstLiked = Array.from(likedPosts)[0];
-            if (firstLiked) navigate(`/issues/${firstLiked}`);
-          }}
-          aria-label="Liked"
+          aria-label="Profile"
         >
-          <span className="nav-icon">👍</span>
-          <span className="nav-label">Liked</span>
-        </button>
-        <button 
-          className="nav-item"
-          onClick={() => {
-            const firstDisliked = Array.from(dislikedPosts)[0];
-            if (firstDisliked) navigate(`/issues/${firstDisliked}`);
-          }}
-          aria-label="Disliked"
-        >
-          <span className="nav-icon">👎</span>
-          <span className="nav-label">Disliked</span>
-        </button>
+          <span className="nav-label">Profile</span>
+        </Link>
       </nav>
     </div>
   );

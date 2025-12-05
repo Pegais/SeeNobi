@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Logo from '../Logo/Logo';
-import ThemeToggle from '../ThemeToggle/ThemeToggle';
 import './Layout.css';
 
 const Layout = ({ children }) => {
@@ -22,7 +21,6 @@ const Layout = ({ children }) => {
           <Link to="/" className="nav-logo" onClick={() => setMenuOpen(false)}>
             <Logo size="small" />
           </Link>
-          <ThemeToggle />
           <button 
             className="mobile-menu-toggle"
             onClick={() => setMenuOpen(!menuOpen)}
@@ -51,16 +49,6 @@ const Layout = ({ children }) => {
                   <Link to="/private-player/dashboard" className="nav-link" onClick={() => setMenuOpen(false)}>Dashboard</Link>
                 )}
                 <Link to="/analytics" className="nav-link" onClick={() => setMenuOpen(false)}>Analytics</Link>
-                <div className="nav-scores">
-                  <div className="nav-score-item">
-                    <span className="nav-score-label">Trust</span>
-                    <span className="nav-score-value">{user.trustScore || 0}/10</span>
-                  </div>
-                  <div className="nav-score-item">
-                    <span className="nav-score-label">Civic</span>
-                    <span className="nav-score-value">{user.civicSenseScore || 0}/100</span>
-                  </div>
-                </div>
                 <button onClick={handleLogout} className="btn btn-secondary btn-small">Logout</button>
               </>
             ) : (
@@ -75,11 +63,6 @@ const Layout = ({ children }) => {
       <main className="main-content">
         {children}
       </main>
-      <footer className="footer">
-        <div className="container">
-          <p>&copy; 2024 SeeNobi Platform. Decentralized Civic Engagement.</p>
-        </div>
-      </footer>
     </div>
   );
 };

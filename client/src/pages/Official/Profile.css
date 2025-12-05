@@ -1,4 +1,12 @@
 /* Mobile First - Base Styles */
+.official-profile-page {
+  min-height: calc(100vh - 60px);
+  padding: 20px;
+  padding-bottom: 40px;
+  background: var(--bg-primary);
+  box-sizing: border-box;
+}
+
 .profile-header {
   display: flex;
   flex-direction: column;
@@ -126,6 +134,11 @@
 
 /* Tablet - 768px and up */
 @media (min-width: 768px) {
+  .official-profile-page {
+    padding: 30px;
+    padding-bottom: 60px;
+  }
+
   .profile-container {
     grid-template-columns: 1fr 300px;
   }

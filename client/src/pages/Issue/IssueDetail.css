@@ -1,19 +1,26 @@
 /* Mobile First - Base Styles */
+.issue-detail-page {
+  min-height: calc(100vh - 60px);
+  padding: 20px;
+  padding-bottom: 40px;
+  background: var(--bg-primary);
+  box-sizing: border-box;
+}
+
 .back-link {
   display: inline-flex;
   align-items: center;
   gap: 5px;
   margin-bottom: 20px;
-  color: #7dd3fc;
+  color: var(--link-color);
   text-decoration: none;
   font-weight: 500;
-  transition: all 0.3s;
+  transition: color 0.2s ease;
 }
 
 .back-link:hover {
-  color: #a0d4f0;
+  color: var(--link-hover);
   text-decoration: underline;
-  transform: translateX(-3px);
 }
 
 .issue-detail {
@@ -25,10 +32,8 @@
 .issue-main {
   background: var(--bg-secondary);
   padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 2px 4px var(--shadow-sm);
+  border-radius: 6px;
   border: 1px solid var(--border-color);
-  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .issue-header-detail {
@@ -37,7 +42,7 @@
   gap: 15px;
   margin-bottom: 25px;
   padding-bottom: 20px;
-  border-bottom: 2px solid #4a5568;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .issue-header-detail h1 {
@@ -134,10 +139,8 @@
 .sidebar-card {
   background: var(--bg-secondary);
   padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 2px 4px var(--shadow-sm);
+  border-radius: 6px;
   border: 1px solid var(--border-color);
-  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .sidebar-card h3 {
@@ -151,24 +154,24 @@
 }
 
 .sidebar-card a {
-  color: #7dd3fc;
+  color: var(--link-color);
   font-weight: 500;
-  transition: all 0.3s;
+  transition: color 0.2s ease;
 }
 
 .sidebar-card a:hover {
-  color: #a0d4f0;
+  color: var(--link-hover);
   text-decoration: underline;
 }
 
 .info-section a {
-  color: #7dd3fc;
+  color: var(--link-color);
   font-weight: 500;
-  transition: all 0.3s;
+  transition: color 0.2s ease;
 }
 
 .info-section a:hover {
-  color: #a0d4f0;
+  color: var(--link-hover);
   text-decoration: underline;
 }
 

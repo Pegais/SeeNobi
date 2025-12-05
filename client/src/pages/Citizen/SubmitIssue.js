@@ -86,7 +86,7 @@ const SubmitIssue = () => {
   };
 
   return (
-    <div className="container">
+    <div className="submit-issue-container">
       <h1>Submit New Issue</h1>
       <div className="submit-issue-card">
         <form onSubmit={handleSubmit}>

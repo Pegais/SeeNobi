@@ -14,7 +14,7 @@ const IssuesList = () => {
   });
 
   return (
-    <div className="container">
+    <div className="issues-page">
       <h1>All Issues</h1>
       
       <div className="filters">

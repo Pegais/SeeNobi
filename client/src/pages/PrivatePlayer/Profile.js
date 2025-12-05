@@ -16,7 +16,7 @@ const PrivatePlayerProfile = () => {
     : 0;
 
   return (
-    <div className="container">
+    <div className="private-player-profile-page">
       <h1>Private Player Profile</h1>
       <div className="profile-container">
         <div className="profile-main">

@@ -23,14 +23,14 @@ const PollingPage = () => {
 
   if (!poll) {
     return (
-      <div className="container">
+      <div className="polling-page">
         <h1>Poll Not Found</h1>
       </div>
     );
   }
 
   return (
-    <div className="container">
+    <div className="polling-page">
       <h1>Verification Poll</h1>
       <div className="polling-container">
         <div className="poll-card">

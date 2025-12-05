@@ -1,17 +1,29 @@
 /* Mobile First - Base Styles */
+.verification-page {
+  min-height: calc(100vh - 60px);
+  padding: 20px;
+  padding-bottom: 40px;
+  background: var(--bg-primary);
+  box-sizing: border-box;
+}
+
 .verification-card {
   background: var(--bg-secondary);
   padding: 20px;
   border-radius: 12px;
-  box-shadow: 0 2px 4px var(--shadow-sm);
   max-width: 100%;
   margin: 0 auto;
   border: 1px solid var(--border-color);
-  transition: background-color 0.3s ease, border-color 0.3s ease;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
 /* Tablet - 768px and up */
 @media (min-width: 768px) {
+  .verification-page {
+    padding: 30px;
+    padding-bottom: 60px;
+  }
+
   .verification-card {
     padding: 30px;
     max-width: 600px;

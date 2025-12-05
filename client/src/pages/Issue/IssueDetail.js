@@ -8,14 +8,14 @@ const IssueDetail = () => {
   const issue = mockIssues.find(i => i.issueId === id);
   
   if (!issue) {
-    return <div className="container"><h1>Issue not found</h1></div>;
+    return <div className="issue-detail-page"><h1>Issue not found</h1></div>;
   }
 
   const assignedUser = issue.assignedTo ? 
     (issue.assignedTo.userType === 'government_official' ? mockUsers.official : mockUsers.privatePlayer) : null;
 
   return (
-    <div className="container">
+    <div className="issue-detail-page">
       <Link to="/issues" className="back-link">← Back to Issues</Link>
       
       <div className="issue-detail">

@@ -16,7 +16,7 @@ const OfficialDashboard = () => {
     : assignedIssues.filter(issue => issue.status === filter);
 
   return (
-    <div className="container">
+    <div className="official-dashboard-page">
       <div className="dashboard-header">
         <div>
           <h1>Official Dashboard</h1>

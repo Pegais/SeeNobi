@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { mockIssues, mockUsers } from '../../data/mockData';
-import ScoreDisplay from '../../components/ScoreDisplay/ScoreDisplay';
-import Badge from '../../components/Badge/Badge';
 import './Dashboard.css';
 
 const CitizenDashboard = () => {
@@ -18,16 +16,14 @@ const CitizenDashboard = () => {
 
   return (
     <div className="dashboard-feed">
-      {/* Left Sidebar - Toggle Panel */}
+      {/* Left Sidebar - Fixed Profile Container */}
       <>
         <button 
           className="sidebar-toggle-btn"
           onClick={() => setSidebarOpen(!sidebarOpen)}
           aria-label="Toggle sidebar"
         >
-          <span className={sidebarOpen ? 'icon-close' : 'icon-menu'}>
-            {sidebarOpen ? '✕' : '☰'}
-          </span>
+          <span>{sidebarOpen ? '×' : '≡'}</span>
         </button>
         <aside className={`left-sidebar ${sidebarOpen ? 'sidebar-open' : ''}`}>
           <div className="sidebar-header">
@@ -36,31 +32,13 @@ const CitizenDashboard = () => {
             </div>
             <div className="sidebar-user-info">
               <h3>{user.displayName}</h3>
-              <p className="user-type-badge">Citizen</p>
             </div>
-          </div>
-
-          <div className="sidebar-scores">
-            <ScoreDisplay
-              type="trust"
-              score={user.trustScore}
-              maxScore={10}
-              label="Trust Score"
-              compact={true}
-            />
-            <ScoreDisplay
-              type="civic"
-              score={user.civicSenseScore}
-              maxScore={100}
-              label="Civic Sense Score"
-              compact={true}
-            />
           </div>
 
           <div className="sidebar-stats">
             <div className="stat-item">
               <span className="stat-value">{myIssues.length}</span>
-              <span className="stat-label">My Issues</span>
+              <span className="stat-label">Issues</span>
             </div>
             <div className="stat-item">
               <span className="stat-value">{resolvedCount}</span>
@@ -70,39 +48,14 @@ const CitizenDashboard = () => {
 
           <div className="sidebar-actions">
             <Link to="/citizen/submit-issue" className="sidebar-action-btn">
-              <span className="action-icon">📝</span>
-              <span>Submit Issue</span>
+              <span>Report Issue</span>
             </Link>
             <Link to="/citizen/profile" className="sidebar-action-btn">
-              <span className="action-icon">👤</span>
-              <span>View Profile</span>
-            </Link>
-            <Link to="/analytics" className="sidebar-action-btn">
-              <span className="action-icon">📊</span>
-              <span>Analytics</span>
+              <span>Profile</span>
             </Link>
             <Link to="/issues" className="sidebar-action-btn">
-              <span className="action-icon">🔍</span>
-              <span>Browse All Issues</span>
+              <span>All Issues</span>
             </Link>
-          </div>
-
-          <div className="sidebar-achievements">
-            <h4>Achievements</h4>
-            <div className="achievements-grid">
-              {user.trustScore >= 7 && (
-                <Badge type="premium" text="Master" icon="👑" size="small" />
-              )}
-              {user.civicSenseScore >= 75 && (
-                <Badge type="success" text="Champion" icon="💎" size="small" />
-              )}
-              {user.itrVerified && (
-                <Badge type="verified" text="Tax Compliant" icon="✓" size="small" />
-              )}
-              {resolvedCount > 0 && (
-                <Badge type="info" text="Issue Resolver" icon="🎯" size="small" />
-              )}
-            </div>
           </div>
         </aside>
         {sidebarOpen && (
@@ -110,7 +63,7 @@ const CitizenDashboard = () => {
         )}
       </>
 
-      {/* Main Feed Section */}
+      {/* Main Feed Section - Scrollable */}
       <main className="feed-main">
         <div className="feed-header">
           <h1>My Dashboard</h1>
@@ -123,21 +76,7 @@ const CitizenDashboard = () => {
               {user.displayName.charAt(user.displayName.length - 1)}
             </div>
             <Link to="/citizen/submit-issue" className="create-post-input">
-              What's the issue in your area?
-            </Link>
-          </div>
-          <div className="create-post-actions">
-            <Link to="/citizen/submit-issue" className="post-action-item">
-              <span className="action-icon">📷</span>
-              <span>Photo</span>
-            </Link>
-            <Link to="/citizen/submit-issue" className="post-action-item">
-              <span className="action-icon">📍</span>
-              <span>Location</span>
-            </Link>
-            <Link to="/citizen/submit-issue" className="post-action-item">
-              <span className="action-icon">🏷️</span>
-              <span>Category</span>
+              Report an issue in your area
             </Link>
           </div>
         </div>
@@ -160,17 +99,10 @@ const CitizenDashboard = () => {
                           day: 'numeric',
                           year: 'numeric'
                         })} · {issue.areaCode}
-                        {issue.areaWeighting.reporterIsLocal && (
-                          <span className="local-badge">📍 Local</span>
-                        )}
                       </div>
                     </div>
                   </div>
-                  <Badge 
-                    type={getStatusColor(issue.status)} 
-                    text={issue.status.replace('_', ' ')} 
-                    size="small" 
-                  />
+                  <span className="post-status">{issue.status.replace('_', ' ')}</span>
                 </div>
 
                 <div className="post-content">
@@ -186,41 +118,31 @@ const CitizenDashboard = () => {
                   )}
 
                   <div className="post-tags">
-                    <Badge type="info" text={issue.category} size="small" />
+                    <span className="post-category">{issue.category}</span>
                     {issue.verificationStatus.isVerified && (
-                      <Badge type="verified" text="Verified" icon="✓" size="small" />
+                      <span className="post-verified">Verified</span>
                     )}
                     {issue.assignedTo && (
-                      <Badge type="info" text="Assigned" icon="👤" size="small" />
+                      <span className="post-assigned">Assigned</span>
                     )}
                   </div>
                 </div>
 
                 <div className="post-footer">
                   <div className="post-actions">
-                    <button className="post-action-btn">
-                      <span className="action-icon">👍</span>
-                      <span>Support</span>
-                    </button>
                     <Link to={`/issues/${issue.issueId}`} className="post-action-btn">
-                      <span className="action-icon">💬</span>
                       <span>View Details</span>
                     </Link>
-                    <button className="post-action-btn">
-                      <span className="action-icon">📤</span>
-                      <span>Share</span>
-                    </button>
                   </div>
                 </div>
               </div>
             ))
           ) : (
             <div className="empty-state">
-              <div className="empty-icon">📝</div>
               <h3>No Issues Yet</h3>
               <p>Start by submitting your first issue!</p>
               <Link to="/citizen/submit-issue" className="btn btn-primary">
-                Submit Your First Issue
+                Report Your First Issue
               </Link>
             </div>
           )}
@@ -228,17 +150,6 @@ const CitizenDashboard = () => {
       </main>
     </div>
   );
-};
-
-const getStatusColor = (status) => {
-  const colors = {
-    'submitted': 'info',
-    'under_review': 'warning',
-    'in_progress': 'info',
-    'resolved': 'success',
-    'closed': 'success'
-  };
-  return colors[status] || 'info';
 };
 
 export default CitizenDashboard;

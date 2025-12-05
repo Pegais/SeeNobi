@@ -1,4 +1,12 @@
 /* Mobile First - Base Styles */
+.issues-page {
+  min-height: calc(100vh - 60px);
+  padding: 20px;
+  padding-bottom: 40px;
+  background: var(--bg-primary);
+  box-sizing: border-box;
+}
+
 .filters {
   display: flex;
   flex-direction: column;
@@ -14,7 +22,7 @@
 
 .filter-group label {
   font-weight: 600;
-  color: #e0e0e0;
+  color: var(--text-secondary);
   font-size: 13px;
 }
 
@@ -31,17 +39,15 @@
 .issue-card {
   background: var(--bg-secondary);
   padding: 15px;
-  border-radius: 12px;
-  box-shadow: 0 2px 4px var(--shadow-sm);
+  border-radius: 6px;
   display: flex;
   flex-direction: column;
   border: 1px solid var(--border-color);
-  transition: all 0.3s;
+  transition: border-color 0.2s ease;
 }
 
 .issue-card:hover {
   border-color: var(--border-hover);
-  box-shadow: 0 4px 8px var(--shadow-md);
 }
 
 .issue-header {

@@ -20,7 +20,7 @@ const VerificationPage = () => {
   };
 
   return (
-    <div className="container">
+    <div className="verification-page">
       <h1>Verification</h1>
       <div className="verification-card">
         <div className="form-group">

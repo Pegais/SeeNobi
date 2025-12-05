@@ -1,4 +1,12 @@
 /* Mobile First - Base Styles */
+.official-dashboard-page {
+  min-height: calc(100vh - 60px);
+  padding: 20px;
+  padding-bottom: 40px;
+  background: var(--bg-primary);
+  box-sizing: border-box;
+}
+
 .official-info {
   color: var(--text-tertiary);
   margin-top: 5px;
@@ -22,6 +30,11 @@
 
 /* Tablet - 768px and up */
 @media (min-width: 768px) {
+  .official-dashboard-page {
+    padding: 30px;
+    padding-bottom: 60px;
+  }
+
   .section-header {
     flex-direction: row;
     justify-content: space-between;

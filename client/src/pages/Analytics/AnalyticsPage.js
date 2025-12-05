@@ -6,7 +6,7 @@ const AnalyticsPage = () => {
   const analytics = mockAnalytics;
 
   return (
-    <div className="container">
+    <div className="analytics-container">
       <h1>Platform Analytics</h1>
       
       <div className="analytics-grid">

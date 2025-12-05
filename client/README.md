@@ -1,6 +1,6 @@
-# SeeNobi Client
+# SeeNubee Client
 
-React frontend application for the SeeNobi civic engagement platform.
+React frontend application for the SeeNubee civic engagement platform.
 
 ## Setup
 
@@ -9,23 +9,16 @@ React frontend application for the SeeNobi civic engagement platform.
 npm install
 ```
 
-2. Add the logo image:
-   - Place your SeeNobi logo image at `client/public/seenobi-logo.png`
-   - The logo should be a PNG file with transparent background
-
-3. Start development server:
+2. Start development server:
 ```bash
 npm start
 ```
 
 The app will open at http://localhost:3000
 
-## Logo Setup
+## Logo
 
-The application uses the SeeNobi logo image. Make sure to:
-1. Place the logo file at `client/public/seenobi-logo.png`
-2. The logo will automatically scale for different sizes (small, medium, large)
-3. The logo is responsive and adapts to all viewport sizes
+The application uses a custom SVG-based logo component that displays the SeeNubee branding with a ninja character and camera icon. The logo automatically scales for different sizes (small, medium, large) and is fully responsive.
 
 ## Responsive Design
 

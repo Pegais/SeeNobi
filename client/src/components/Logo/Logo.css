@@ -1,4 +1,4 @@
-/* Mobile First - Base Styles */
+/* Logo Component - Valorant Style */
 .logo-container {
   display: flex;
   align-items: center;
@@ -6,106 +6,184 @@
   position: relative;
 }
 
-.logo-wrapper {
+.logo-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.logo-circle-wrapper {
   position: relative;
-  display: inline-block;
-  background: transparent;
-  isolation: isolate;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.logo-image {
-  height: 40px;
-  width: auto;
-  object-fit: contain;
-  display: block;
-  /* Remove dark background using blend mode */
-  mix-blend-mode: lighten;
-  filter: 
-    brightness(1.5) 
-    contrast(1.3)
-    drop-shadow(0 2px 4px rgba(0,0,0,0.2));
-  background: transparent;
-  image-rendering: -webkit-optimize-contrast;
-}
-
-/* Fallback: If lighten doesn't work, try screen mode */
-.logo-container .logo-image {
-  mix-blend-mode: screen;
-}
-
-/* Alternative approach: Use CSS mask or filter to remove dark pixels */
-.logo-container::before {
-  content: '';
+/* Subtle Glow effect - Minimalist */
+.logo-glow {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: transparent;
-  pointer-events: none;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 140, 60, 0.15) 0%, transparent 70%);
+  filter: blur(12px);
+  transform: scale(1.1);
+  z-index: 0;
+}
+
+/* Main circle - Minimalist */
+.logo-circle {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: #0D1117;
+  border: 2px solid #ff8c3c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.logo-svg {
+  width: 48px;
+  height: 48px;
+}
+
+/* Text Logo */
+.logo-text {
+  display: flex;
+  align-items: center;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.logo-text-see {
+  color: #3a3a3a;
+  font-weight: 700;
+}
+
+.logo-text-nubee {
+  color: #ff8c3c;
+  font-weight: 700;
 }
 
 /* Size Variants */
-.logo-small .logo-image {
+.logo-small .logo-circle {
+  width: 32px;
   height: 32px;
+  border-width: 2px;
 }
 
-.logo-medium .logo-image {
-  height: 40px;
+.logo-small .logo-svg {
+  width: 24px;
+  height: 24px;
 }
 
-.logo-large .logo-image {
-  height: 80px;
+.logo-small .logo-text {
+  font-size: 16px;
 }
 
-.logo-banner .logo-image {
-  width: 100%;
-  max-width: 500px;
-  height: auto;
-  min-height: 100px;
-  object-fit: contain;
+.logo-small .logo-glow {
+  filter: blur(10px);
+  transform: scale(1.1);
+}
+
+.logo-medium .logo-circle {
+  width: 64px;
+  height: 64px;
+  border-width: 4px;
+}
+
+.logo-medium .logo-svg {
+  width: 48px;
+  height: 48px;
+}
+
+.logo-medium .logo-text {
+  font-size: 24px;
+}
+
+.logo-large .logo-circle {
+  width: 128px;
+  height: 128px;
+  border-width: 6px;
+}
+
+.logo-large .logo-svg {
+  width: 96px;
+  height: 96px;
+}
+
+.logo-large .logo-text {
+  font-size: 48px;
+}
+
+.logo-large .logo-glow {
+  filter: blur(30px);
+  transform: scale(1.3);
 }
 
 /* Tablet - 768px and up */
 @media (min-width: 768px) {
-  .logo-medium .logo-image {
-    height: 48px;
+  .logo-medium .logo-circle {
+    width: 72px;
+    height: 72px;
   }
 
-  .logo-large .logo-image {
-    height: 100px;
+  .logo-medium .logo-svg {
+    width: 56px;
+    height: 56px;
   }
 
-  .logo-banner .logo-image {
-    max-width: 600px;
-    min-height: 120px;
+  .logo-medium .logo-text {
+    font-size: 28px;
+  }
+
+  .logo-large .logo-circle {
+    width: 144px;
+    height: 144px;
+  }
+
+  .logo-large .logo-svg {
+    width: 112px;
+    height: 112px;
+  }
+
+  .logo-large .logo-text {
+    font-size: 56px;
   }
 }
 
 /* Desktop - 1024px and up */
 @media (min-width: 1024px) {
-  .logo-medium .logo-image {
-    height: 56px;
+  .logo-medium .logo-circle {
+    width: 80px;
+    height: 80px;
   }
 
-  .logo-large .logo-image {
-    height: 120px;
+  .logo-medium .logo-svg {
+    width: 64px;
+    height: 64px;
   }
 
-  .logo-banner .logo-image {
-    max-width: 700px;
-    min-height: 150px;
-  }
-}
-
-/* Large Desktop - 1440px and up */
-@media (min-width: 1440px) {
-  .logo-large .logo-image {
-    height: 140px;
+  .logo-medium .logo-text {
+    font-size: 32px;
   }
 
-  .logo-banner .logo-image {
-    max-width: 800px;
-    min-height: 180px;
+  .logo-large .logo-circle {
+    width: 160px;
+    height: 160px;
+  }
+
+  .logo-large .logo-svg {
+    width: 128px;
+    height: 128px;
+  }
+
+  .logo-large .logo-text {
+    font-size: 64px;
   }
 }

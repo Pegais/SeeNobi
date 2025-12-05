@@ -1,4 +1,12 @@
 /* Mobile First - Base Styles */
+.private-player-profile-page {
+  min-height: calc(100vh - 60px);
+  padding: 20px;
+  padding-bottom: 40px;
+  background: var(--bg-primary);
+  box-sizing: border-box;
+}
+
 .company-type {
   color: var(--text-tertiary);
   font-size: 16px;
@@ -26,6 +34,11 @@
 
 /* Tablet - 768px and up */
 @media (min-width: 768px) {
+  .private-player-profile-page {
+    padding: 30px;
+    padding-bottom: 60px;
+  }
+
   .company-type {
     font-size: 18px;
   }

@@ -190,9 +190,8 @@ const AddressVerification = () => {
   };
 
   return (
-    <div className="container">
-      <div className="address-verification-container">
-        <h1>Verify Your Address</h1>
+    <div className="address-verification-container">
+      <h1>Verify Your Address</h1>
         <p className="verification-subtitle">
           Accurate location helps us prioritize local issues and give you proper area-based weighting.
         </p>
@@ -416,7 +415,6 @@ const AddressVerification = () => {
           </div>
         )}
       </div>
-    </div>
   );
 };
 

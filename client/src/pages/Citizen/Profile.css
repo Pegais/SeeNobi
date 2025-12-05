@@ -1,4 +1,12 @@
 /* Mobile First - Base Styles */
+.profile-page {
+  min-height: calc(100vh - 60px);
+  padding: 20px;
+  padding-bottom: 40px;
+  background: var(--bg-primary);
+  box-sizing: border-box;
+}
+
 .profile-container {
   display: grid;
   grid-template-columns: 1fr;
@@ -10,9 +18,8 @@
   background: var(--bg-secondary);
   padding: 20px;
   border-radius: 12px;
-  box-shadow: 0 2px 4px var(--shadow-sm);
   border: 1px solid var(--border-color);
-  transition: background-color 0.3s ease, border-color 0.3s ease;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
 .profile-card h2 {
@@ -70,6 +77,11 @@
 
 /* Tablet - 768px and up */
 @media (min-width: 768px) {
+  .profile-page {
+    padding: 30px;
+    padding-bottom: 60px;
+  }
+
   .profile-container {
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;

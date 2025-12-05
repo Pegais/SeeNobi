@@ -1,7 +1,7 @@
 {
-  "name": "seenobi-client",
+  "name": "seenubee-client",
   "version": "1.0.0",
-  "description": "SeeNobi Platform Frontend",
+  "description": "SeeNubee Platform Frontend",
   "private": true,
   "dependencies": {
     "react": "^18.2.0",

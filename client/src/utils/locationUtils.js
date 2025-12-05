@@ -1,6 +1,6 @@
 // Location utilities for caching and reverse geocoding
 
-const LOCATION_CACHE_KEY = 'seenobi_user_location';
+const LOCATION_CACHE_KEY = 'seenubee_user_location';
 const LOCATION_CHANGE_THRESHOLD = 0.01; // ~1km change in lat/long
 
 // Calculate distance between two coordinates (Haversine formula)
@@ -102,7 +102,7 @@ export const geocodeAddress = async (address) => {
       `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}&limit=1&addressdetails=1`,
       {
         headers: {
-          'User-Agent': 'SeeNobi Platform - Civic Engagement App'
+          'User-Agent': 'SeeNubee Platform - Civic Engagement App'
         }
       }
     );
@@ -144,7 +144,7 @@ export const reverseGeocode = async (lat, lon) => {
       `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1`,
       {
         headers: {
-          'User-Agent': 'SeeNobi Platform - Civic Engagement App' // Required by Nominatim
+          'User-Agent': 'SeeNubee Platform - Civic Engagement App' // Required by Nominatim
         }
       }
     );

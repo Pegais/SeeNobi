@@ -7,7 +7,7 @@ const CitizenProfile = () => {
   const user = mockUsers.citizen;
 
   return (
-    <div className="container">
+    <div className="profile-page">
       <h1>My Profile</h1>
       <div className="profile-container">
         <div className="profile-card">

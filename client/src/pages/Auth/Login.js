@@ -27,7 +27,7 @@ const Login = () => {
   return (
     <div className="auth-container">
       <div className="auth-card">
-        <h2>Login to SeeNobi</h2>
+        <h2>Login to SeeNubee</h2>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label className="label">Email</label>

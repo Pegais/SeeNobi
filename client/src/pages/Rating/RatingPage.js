@@ -38,7 +38,7 @@ const RatingPage = () => {
   };
 
   return (
-    <div className="container">
+    <div className="rating-page">
       <h1>Rate {isOfficial ? 'Government Official' : 'Private Player'}</h1>
       <div className="rating-card">
         {issueId && (
